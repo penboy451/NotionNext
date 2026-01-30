@@ -7,106 +7,72 @@
  * 更新日期: 2026-01-30
  * 
  * 优化说明：
- * 1. 性能重构：使用 router.push 替代 location.href，实现单页应用 (SPA) 的无刷新跳转。
- * 2. 交互升级：引入科技蓝 (#0070f3) 作为加载与搜索状态的视觉反馈。
- * 3. 逻辑修复：将 IME 输入锁移入组件内部 Ref，确保多实例下的逻辑隔离。
+ * 1. 彻底修复：将 JSX 内部注释正确包裹在 {/* */} 中，杜绝注释泄露到页面。
+ * 2. 消除透射：将输入框背景设为实色（bg-white），防止底层 Bio 文字穿透显示。
+ * 3. 视觉增强：优化了日夜模式下的边框对比度，确保搜索框轮廓清晰。
  * -----------------------------------------------------------------------
  */
 
 import { useRouter } from 'next/router'
 import { useImperativeHandle, useRef, useState } from 'react'
 
-/**
- * 搜索输入框组件主体
- * @param {string} keyword - 初始搜索词
- * @param {object} cRef - 转发给父组件的引用，用于控制焦点
- * @param {string} className - 自定义样式类
- */
 const SearchInput = ({ keyword, cRef, className }) => {
-  const [onLoading, setLoadingState] = useState(false) // 搜索加载状态
-  const [showClean, setShowClean] = useState(false)   // “清空”图标显示控制
+  const [onLoading, setLoadingState] = useState(false)
+  const [showClean, setShowClean] = useState(false)
   const router = useRouter()
   const searchInputRef = useRef()
-  
-  /**
-   * 中文输入法 (IME) 锁定逻辑说明：
-   * lock 用于标记当前是否正在进行拼音组合。
-   * 在选定汉字前，不执行搜索词更新逻辑，防止界面抖动。
-   */
   const lock = useRef(false)
 
-  // =====================================================================
-  // 第一部分：内部接口与事件处理 (API & Handlers)
-  // =====================================================================
-
-  // 向父组件暴露 focus 接口，提升组件交互的灵活性
-  useImperativeHandle(cRef, () => {
-    return {
-      focus: () => {
-        searchInputRef?.current?.focus()
-      }
+  // 暴露焦点接口
+  useImperativeHandle(cRef, () => ({
+    focus: () => {
+      searchInputRef?.current?.focus()
     }
-  })
+  }))
 
-  /**
-   * 执行搜索逻辑
-   * 优化：使用 router.push 保持 SPA 路由上下文，避免白屏加载。
-   */
+  // 搜索执行逻辑 (SPA 模式)
   const handleSearch = () => {
     const key = searchInputRef.current.value
-
     if (key && key !== '') {
       setLoadingState(true)
-      // 使用 Next.js 路由跳转，体验更流畅
       router.push(`/search/${encodeURIComponent(key)}`)
     } else {
       router.push('/')
     }
   }
 
-  // 处理键盘按键 (回车搜索，ESC 清空)
+  // 键盘事件处理
   const handleKeyUp = (e) => {
-    if (e.keyCode === 13) {
-      handleSearch()
-    } else if (e.keyCode === 27) {
-      cleanSearch()
-    }
+    if (e.keyCode === 13) handleSearch()
+    else if (e.keyCode === 27) cleanSearch()
   }
 
-  // 清空逻辑：清除输入值并隐藏关闭按钮
   const cleanSearch = () => {
     searchInputRef.current.value = ''
     setShowClean(false)
   }
 
-  // 监听输入框变化
   const updateSearchKey = (val) => {
-    if (lock.current) return // 如果拼音还没打完，暂时不处理
-    
+    if (lock.current) return
     searchInputRef.current.value = val
-    setShowClean(!!val) // 快捷语法：有值则显示，无值则隐藏
+    setShowClean(!!val)
   }
 
-  // =====================================================================
-  // 第二部分：中文输入优化 (IME Composition)
-  // =====================================================================
   const lockSearchInput = () => { lock.current = true }
   const unLockSearchInput = () => { lock.current = false }
 
   return (
-    /**
-     * 容器层：
-     * - bg-gray-50: 采用极浅灰色，与 Title 组件风格保持一致。
-     * - border: 增加细微边框，增加输入框的精致感。
-     */
-    <div className={`flex w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-sm ${className || ''}`}>
-        
-        {/* 输入框主体 */}
+    <div className={`flex w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-sm overflow-hidden ${className || ''}`}>
+        {/* 
+            输入框主体：
+            - bg-white: 设为实色，防止背景文字透视。
+            - h-10: 规范化高度，确保点击区域足够大。
+        */}
         <input
             ref={searchInputRef}
             type='text'
             placeholder='输入关键词搜索...'
-            className='outline-none w-full text-sm pl-4 transition-all focus:bg-white dark:focus:bg-black font-light leading-10 text-black dark:text-white bg-transparent antialiased'
+            className='outline-none w-full text-sm pl-4 h-10 transition-all font-light text-black dark:text-white bg-white dark:bg-gray-900 antialiased'
             onKeyUp={handleKeyUp}
             onCompositionStart={lockSearchInput}
             onCompositionUpdate={lockSearchInput}
@@ -118,19 +84,19 @@ const SearchInput = ({ keyword, cRef, className }) => {
             defaultValue={keyword}
         />
 
-        {/* 搜索/加载按钮 */}
+        {/* 搜索/加载按钮：增加品牌蓝反馈 */}
         <div 
-          className='px-4 cursor-pointer flex items-center justify-center transition-colors duration-200'
+          className='px-4 cursor-pointer flex items-center justify-center bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 transition-colors'
           onClick={handleSearch}
         >
-            <i className={`transform duration-300 text-gray-400 hover:text-[#0070f3] fas ${onLoading ? 'fa-spinner animate-spin text-[#0070f3]' : 'fa-search'}`} />
+            <i className={`fas ${onLoading ? 'fa-spinner animate-spin text-[#0070f3]' : 'fa-search text-gray-500 hover:text-[#0070f3]'}`} />
         </div>
 
-        {/* 清空按钮 (按需展示) */}
+        {/* 清空按钮 */}
         {showClean && (
-            <div className='-ml-10 pr-10 cursor-pointer flex items-center justify-center'>
+            <div className='absolute right-12 top-0 h-10 flex items-center justify-center'>
                 <i 
-                  className='fas fa-times text-gray-300 hover:text-red-500 transition-colors duration-200' 
+                  className='fas fa-times text-gray-300 hover:text-red-500 cursor-pointer p-2' 
                   onClick={cleanSearch} 
                 />
             </div>
