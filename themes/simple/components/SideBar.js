@@ -1,26 +1,54 @@
-import { AdSlot } from '@/components/GoogleAdsense'
-import Live2D from '@/components/Live2D'
+/**
+ * -----------------------------------------------------------------------
+ * SIMPLE 主题：侧边栏容器组件 (Optimized Sidebar)
+ * -----------------------------------------------------------------------
+ * 所有者: penboy451
+ * 站点: www.pengboyu.com
+ * 更新日期: 2026-01-30
+ * 
+ * 优化说明：
+ * 1. 极致纯净：彻底移除了原版中的所有广告位（AdSlot、WWAds）占位代码。
+ * 2. 性能精简：去除了 Live2D 挂件引用，确保侧边栏仅保留核心业务逻辑。
+ * 3. 结构重组：目前的侧边栏仅由“文章目录”与“动态公告”构成，视觉重点更突出。
+ * -----------------------------------------------------------------------
+ */
+
 import Announcement from './Announcement'
 import Catalog from './Catalog'
-import WWAds from '@/components/WWAds'
+
+// =====================================================================
+// 组件主体逻辑 (Optimized Component Logic)
+// =====================================================================
 
 /**
- * 侧边栏
- * @param {*} props
- * @returns
+ * 侧边栏组件
+ * @param {Object} props - 包含文章元数据 (post) 和公告数据 (notice) 的属性对象
  */
-export default function SideBar (props) {
+export default function SideBar(props) {
+  // 从 props 中提取公告对象
   const { notice } = props
-  return (<>
 
-            <Catalog {...props} />
+  return (
+    <>
+      {/**
+       * 文章目录索引 (Table of Contents)
+       * 作用：自动解析文章标题，为读者提供快速跳转的导航链接。
+       * 表现：仅在文章详情页且存在标题层级时显示。
+       */}
+      <Catalog {...props} />
 
-            <Live2D />
+      {/**
+       * 全站公告组件 (Announcement)
+       * 作用：展示从 Notion 数据库同步的 Notice 类型文章。
+       * 表现：由子组件内部逻辑控制，若无 Published 状态的公告则自动隐藏。
+       */}
+      <Announcement post={notice} />
 
-            <Announcement post={notice} />
-
-            <AdSlot/>
-            <WWAds orientation="vertical" className="w-full" />
-
-    </>)
+      {/* 
+          [审计说明]：
+          已删除原有的 AdSlot (Google Ads) 与 WWAds 占位符。
+          如未来需要重新开启广告功能，请在此处恢复组件引用。
+      */}
+    </>
+  )
 }
