@@ -1,79 +1,49 @@
-# 帮助教程
+# penboy451 的数字花园 (Digital Garden)
 
-访问帮助：[NotionNext帮助手册](https://docs.tangly1024.com/)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/penboy451/NotionNext?style=for-the-badge&color=blue)](https://github.com/penboy451/NotionNext/commits/main)
+[![Build status](https://img.shields.io/github/deployments/penboy451/NotionNext/Production?logo=Vercel&style=for-the-badge)](https://vercel.com/penboy451/notion-next)
+[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fwww.pengboyu.com&style=for-the-badge&label=Online)](https://www.pengboyu.com)
 
-> 本项目教程为免费、公开资源，仅限个人学习使用，禁止利用本教程建立的博客发布非法内容、进行违法犯罪活动。严禁任何个人或组织将本教程用于商业用途，包括但不限于直接售卖、间接收费、或其他变相盈利行为。转载、复制或介绍本教程内容时，须保留作者信息并明确注明来源。 
-> 本项目仅提供由作者团队授权的付费咨询服务，请注意辨别，谨防诈骗行为。任何未经授权的收费服务均可能存在法律风险。
+---
 
-Notion是一个能让效率暴涨的生产力引擎，可以帮你书写文档、管理笔记，搭建知识库，甚至可以为你规划项目、时间管理、组织团队、提高生产力、还有当前最强大的AI技术加持。
+## 🚀 项目概述
 
-> 若希望进一步探索Notion的功能，欢迎购买《[Notion笔记从入门到精通进阶课程](https://docs.tangly1024.com/article/notion-tutorial)》
+这是 **penboy451** 的个人博客系统。基于 Next.js 框架与 Notion API 构建，实现了从 Notion 笔记到极速静态网页的自动化部署。
 
-> 若希望获得稳定、高速、不限设备数量的VPN科学上网服务，欢迎使用[飞鸟VPN](https://fbinv02.fbaff.cc/auth/register?code=kaA7t4kh)，这是我目前在用的VPN，仅作友情推广
+- **站点地址**: [www.pengboyu.com](https://www.pengboyu.com)
+- **托管平台**: Vercel
+- **内容仓库**: Notion Database
 
-# NotionNext
+## 🛠️ 技术架构
 
-<p>
-  <a aria-label="GitHub commit activity" href="https://github.com/tangly1024/NotionNext/commits/main" title="GitHub commit activity">
-    <img src="https://img.shields.io/github/commit-activity/m/tangly1024/NotionNext?style=for-the-badge"/>
-  </a>
-  <a aria-label="GitHub contributors" href="https://github.com/tangly1024/NotionNext/graphs/contributors" title="GitHub contributors">
-    <img src="https://img.shields.io/github/contributors/tangly1024/NotionNext?color=orange&style=for-the-badge"/>
-  </a>
-  <a aria-label="Build status" href="#" title="Build status">
-    <img src="https://img.shields.io/github/deployments/tangly1024/NotionNext/Production?logo=Vercel&style=for-the-badge"/>
-  </a>
-  <a aria-label="Powered by Vercel" href="https://vercel.com?utm_source=Craigary&utm_campaign=oss" title="Powered by Vercel">
-    <img src="https://www.datocms-assets.com/31049/1618983297-powered-by-vercel.svg" height="28"/>
-  </a>
-</p>
+本项目采用了现代化的前端技术栈，确保全球范围内的访问体验与极致的 SEO 表现：
 
-中文文档 | [README in English](./README_EN.md)
+- **核心框架**: [Next.js](https://nextjs.org) (React 生态系统)
+- **样式处理**: [Tailwind CSS](https://www.tailwindcss.cn/)
+- **数据交互**: [Notion API](https://developers.notion.com/)
+- **渲染引擎**: React-notion-x
+- **图标系统**: Fontawesome 6.4.0 (全球加速版)
+- **部署方案**: Vercel 全球边缘网络 (Edge Network)
 
-<hr/>
+## 📋 维护与更新逻辑
 
-一个使用 NextJS + Notion API 实现的，部署在 Vercel 上的静态博客系统。为Notion和所有创作者设计。
+1. **内容管理**: 所有博文、菜单及配置均在 Notion 数据库中完成，实现“写作即发布”。
+2. **自动化构建**: 每当代码提交至 GitHub，Vercel 将自动触发生产环境构建。
+3. **性能优化**: 已针对中国大陆访问进行字体镜像加速，并开启了全站图片的 WebP/AVIF 转码。
 
-支持多种部署方案
+## ⚙️ 核心配置文件
 
-## 预览效果
+为了保持代码库的纯净，全站配置已按模块拆分至 `/conf/` 目录：
 
-在线演示：[https://preview.tangly1024.com/](https://preview.tangly1024.com/) ，点击左下角挂件可以切换主题，没找到喜欢的主题？[贡献](/CONTRIBUTING.md)一个吧~
+- `blog.config.js`: 全站总司令部配置
+- `ad.config.js`: 广告位零干扰管理
+- `analytics.config.js`: SEO 与流量监控
+- `font.config.js`: 全球字体加速方案
+- `performance.config.js`: 性能与缓存优化
 
-| Next                                                                                                  | Medium                                                                                                      | Hexo                                                                                                  | Fukasawa                                                                                                          |
-| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| <img src='./docs/theme-next.png' width='300'/> [预览NEXT](https://preview.tangly1024.com/?theme=next) | <img src='./docs/theme-medium.png' width='300'/> [预览MEDIUM](https://preview.tangly1024.com/?theme=medium) | <img src='./docs/theme-hexo.png' width='300'/> [预览HEXO](https://preview.tangly1024.com/?theme=hexo) | <img src='./docs/theme-fukasawa.png' width='300'/> [预览FUKASAWA](https://preview.tangly1024.com/?theme=fukasawa) |
+## 📄 开源协议
 
-## 致谢
+本项目基于 **MIT License**。你可以自由地 Fork、修改并用于个人用途。
 
-感谢Craig Hart发起的Nobelium项目
-
-<table><tr align="left">
-  <td align="center"><a href="https://github.com/craigary" title="Craig Hart"><img src="https://avatars.githubusercontent.com/u/10571717" width="64px;"alt="Craig Hart"/></a><br/><a href="https://github.com/craigary" title="Craig Hart">Craig Hart</a></td>
-</tr></table>
-
-## 贡献者
-
-致敬每一位开发者！
-
-[![Contributors](https://contrib.rocks/image?repo=tangly1024/NotionNext)](https://github.com/tangly1024/NotionNext/graphs/contributors)
-
-## 引用技术
-
-- **框架**: [Next.js](https://nextjs.org)
-- **样式**: [Tailwind CSS](https://www.tailwindcss.cn/)
-- **渲染**: [React-notion-x](https://github.com/NotionX/react-notion-x)
-- **评论**: [Twikoo](https://github.com/imaegoo/twikoo), [Giscus](https://giscus.app/zh-CN), [Gitalk](https://gitalk.github.io), [Cusdis](https://cusdis.com), [Utterances](https://utteranc.es)
-- **图标**: [Fontawesome](https://fontawesome.com/v6/icons/)
-
-## 🔗 友情链接
-
-- [Elog](https://github.com/LetTTGACO/elog) Markdown 批量导出工具、开放式跨平台博客解决方案，随意组合写作平台(语雀/Notion/FlowUs/飞书)和博客平台(Hexo/Vitepress/Halo/Confluence/WordPress等)
-
-## License
-
-The MIT License.
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=tangly1024/NotionNext&type=Date)](https://star-history.com/#tangly1024/NotionNext&Date)
+---
+**© 2026 penboy451. Built with ❤️ and AI.**
