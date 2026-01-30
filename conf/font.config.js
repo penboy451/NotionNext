@@ -1,60 +1,80 @@
 /**
- * 网站字体相关配置
- *
+ * -----------------------------------------------------------------------
+ * NotionNext 网站字体与排版配置文件 (Global Optimized Fonts)
+ * -----------------------------------------------------------------------
+ * 所有者: penboy451
+ * 更新日期: 2026-01-30
+ * 
+ * 优化说明：
+ * 1. 采用全球镜像：将 Google Fonts 切换为 Loli 镜像，确保国内不翻墙也能秒开。
+ * 2. 系统字体优先：采用 GitHub/Medium 同款系统字体栈，无网络请求时也能呈现顶级排版。
+ * 3. 性能平衡：开启 font-display: swap，确保文字在字体加载完成前先行显示，避免白屏。
+ * -----------------------------------------------------------------------
  */
+
 module.exports = {
-  // START ************网站字体*****************
-  // ['font-serif','font-sans'] 两种可选，分别是衬线和无衬线: 参考 https://www.jianshu.com/p/55e410bd2115
-  // 后面空格隔开的font-light的字体粗细，留空是默认粗细；参考 https://www.tailwindcss.cn/docs/font-weight
+  // 网站基础字体样式：'font-sans' (无衬线，现代感强) 或 'font-serif' (有衬线，书卷气浓)
   FONT_STYLE: process.env.NEXT_PUBLIC_FONT_STYLE || 'font-sans font-light',
-  // 字体CSS 例如 https://npm.elemecdn.com/lxgw-wenkai-webfont@1.6.0/style.css
+
+  /**
+   * 全球加速字体库 (Global Font Mirror)
+   * 逻辑：使用 fonts.loli.net 替代 fonts.googleapis.com。
+   * 优势：该镜像在全球均有 CDN 节点，且在国内访问极速，彻底解决国内用户“转圈”问题。
+   */
   FONT_URL: [
-    // 'https://npm.elemecdn.com/lxgw-wenkai-webfont@1.6.0/style.css',
-    'https://fonts.googleapis.com/css?family=Bitter:300,400,700&display=swap',
-    'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap',
-    'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap'
+    'https://fonts.loli.net/css?family=Bitter:300,400,700&display=swap',
+    'https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap',
+    'https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap'
   ],
 
-  // 字体优化配置
-  FONT_DISPLAY: process.env.NEXT_PUBLIC_FONT_DISPLAY || 'swap',
-  FONT_PRELOAD: process.env.NEXT_PUBLIC_FONT_PRELOAD || true,
-  FONT_SUBSET: process.env.NEXT_PUBLIC_FONT_SUBSET || 'chinese-simplified',
-  // 无衬线字体 例如'"LXGW WenKai"'
+  // 字体优化高级配置
+  FONT_DISPLAY: process.env.NEXT_PUBLIC_FONT_DISPLAY || 'swap', // 字体加载时先显示系统字体，加载完再替换
+  FONT_PRELOAD: process.env.NEXT_PUBLIC_FONT_PRELOAD || true,   // 预加载字体，提升响应速度
+  FONT_SUBSET: process.env.NEXT_PUBLIC_FONT_SUBSET || 'chinese-simplified', // 针对中文简体进行子集优化
+
+  /**
+   * 全球无衬线字体栈 (Universal Sans-serif Stack)
+   * 逻辑：优先尝试加载 Inter 和系统自带的高质量字体，无需网络下载，瞬间呈现。
+   */
   FONT_SANS: [
-    // '"LXGW WenKai"',
-    '"PingFang SC"',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    '"Hiragino Sans GB"',
-    '"Microsoft YaHei"',
+    'Inter',             // 全球设计师最爱的现代字体
+    'system-ui',         // 调用操作系统最原生、最快的字体
+    '-apple-system',     // iOS/macOS 专属优化
+    'BlinkMacSystemFont',// Chrome 渲染优化
+    '"PingFang SC"',     // 苹果中文标准字体
+    '"Hiragino Sans GB"',// 旧版 macOS 中文
+    '"Microsoft YaHei"', // Windows 标准中文（微软雅黑）
     '"Segoe UI Emoji"',
     '"Segoe UI Symbol"',
     '"Segoe UI"',
-    '"Noto Sans SC"',
-    'HarmonyOS_Regular',
+    '"Noto Sans SC"',    // 备选网络字体
+    'HarmonyOS_Regular', // 华为鸿蒙字体
     '"Helvetica Neue"',
     'Helvetica',
-    '"Source Han Sans SC"',
     'Arial',
-    'sans-serif',
+    'sans-serif',        // 最后的保底
     '"Apple Color Emoji"'
   ],
-  // 衬线字体 例如'"LXGW WenKai"'
+
+  /**
+   * 全球有衬线字体栈 (Universal Serif Stack)
+   * 逻辑：适合长文阅读，提供优雅的印刷感。
+   */
   FONT_SERIF: [
-    // '"LXGW WenKai"',
     'Bitter',
     '"Noto Serif SC"',
-    'SimSun',
-    '"Times New Roman"',
+    'SimSun',            // Windows 中文保底（中易宋体）
+    '"Times New Roman"', // Windows 英文保底
     'Times',
     'serif',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
     '"Apple Color Emoji"'
   ],
+
+  /**
+   * FontAwesome 图标库加速
+   * 逻辑：采用 cdnjs 全球加速节点，国内和海外访问均非常稳定。
+   */
   FONT_AWESOME:
     process.env.NEXT_PUBLIC_FONT_AWESOME_PATH ||
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' // font-awesome 字体图标地址; 可选 /css/all.min.css ， https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css
-
-  // END ************网站字体*****************
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 }
