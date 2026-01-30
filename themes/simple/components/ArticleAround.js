@@ -7,9 +7,9 @@
  * 更新日期: 2026-01-30
  * 
  * 优化说明：
- * 1. 逻辑修复：修正了原版中“非全即无”的显示 Bug，支持单向导航展示。
- * 2. 品牌对齐：悬浮态同步切换为科技蓝 (#0070f3)，并增加平滑位移动画。
- * 3. 布局稳健：引入标题截断逻辑与弹性布局，确保长标题在移动端不冲突、不溢出。
+ * 1. 逻辑除错：修正了“单篇文章”状态下，上一篇与下一篇指向同一网址的逻辑冗余。
+ * 2. 视觉一致性：悬浮态统一切换为 penboy451 科技蓝 (#0070f3)。
+ * 3. 布局加固：引入 truncate 截断逻辑，防止长标题在小屏设备下发生堆叠。
  * -----------------------------------------------------------------------
  */
 
@@ -21,31 +21,28 @@ import SmartLink from '@/components/SmartLink'
 
 /**
  * 文章翻页导航组件
- * @param {Object} prev - 上一篇文章的元数据对象 (包含 title, slug)
- * @param {Object} next - 下一篇文章的元数据对象 (包含 title, slug)
+ * @param {Object} prev - 上一篇文章元数据
+ * @param {Object} next - 下一篇文章元数据
  */
 export default function ArticleAround({ prev, next }) {
   
   /**
-   * 逻辑修复说明：
-   * 原版逻辑为 if (!prev || !next)，这会导致首篇或末篇文章无法显示导航。
-   * 优化后：仅当两端数据均不存在时（如单页模式）才彻底隐藏。
+   * 关键逻辑校验：
+   * 1. 若两端数据均为空，彻底隐藏。
+   * 2. 增加 isSame 判定，防止在文章极少时出现“左边和右边是同一篇”的尴尬情况。
    */
+  const isSame = prev?.id === next?.id
+  
   if (!prev && !next) {
     return <></>
   }
 
   return (
-    /**
-     * 容器层：
-     * - border-t: 增加顶部细微分割线，将正文与导航区物理隔离。
-     * - space-x-6: 为左右两侧链接留出充足的横向呼吸感。
-     */
     <section className='mt-12 pt-8 mb-4 border-t border-gray-50 dark:border-gray-900 flex flex-col md:flex-row items-center justify-between gap-y-4 md:gap-y-0 antialiased'>
         
-        {/* ==================== 左侧：上一篇文章 (Previous) ==================== */}
+        {/* ------------------ 左侧：上一篇 (PREV) ------------------ */}
         <div className="w-full md:w-1/2 flex justify-start">
-          {prev && (
+          {prev && !isSame && (
             <SmartLink
                 href={`/${prev.slug}`}
                 passHref
@@ -62,9 +59,9 @@ export default function ArticleAround({ prev, next }) {
           )}
         </div>
 
-        {/* ==================== 右侧：下一篇文章 (Next) ==================== */}
+        {/* ------------------ 右侧：下一篇 (NEXT) ------------------ */}
         <div className="w-full md:w-1/2 flex justify-end">
-          {next && (
+          {next && !isSame && (
             <SmartLink
                 href={`/${next.slug}`}
                 passHref
