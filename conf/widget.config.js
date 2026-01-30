@@ -1,67 +1,116 @@
 /**
- * 悬浮在网页上的挂件
+ * -----------------------------------------------------------------------
+ * NotionNext 网页互动挂件与第三方组件配置文件 (Widgets Configuration)
+ * -----------------------------------------------------------------------
+ * 所有者: penboy451
+ * 更新日期: 2026-01-30
+ * 
+ * 配置文件说明：
+ * 1. 本文件用于管理侧边栏、浮窗以及页面底部的交互组件（机器人、宠物、音乐等）。
+ * 2. 警告：开启过多的挂件（尤其是 3D 宠物和音乐播放器）会显著增加网页首屏加载时间。
+ * 3. 建议：根据您的个人品牌需求，仅开启 1-2 个核心交互组件。
+ * -----------------------------------------------------------------------
  */
+
 module.exports = {
-  THEME_SWITCH: process.env.NEXT_PUBLIC_THEME_SWITCH || false, // 是否显示切换主题按钮
-  // Chatbase 是否显示chatbase机器人 https://www.chatbase.co/
+  // =====================================================================
+  // 第一部分：系统基础功能 (System Features)
+  // =====================================================================
+
+  // 是否在页面上显示“日间/夜间”模式切换按钮
+  THEME_SWITCH: process.env.NEXT_PUBLIC_THEME_SWITCH || false,
+
+  // =====================================================================
+  // 第二部分：AI 聊天机器人集成 (AI Chatbots)
+  // =====================================================================
+
+  /**
+   * Chatbase 机器人
+   * 获取：https://www.chatbase.co/
+   */
   CHATBASE_ID: process.env.NEXT_PUBLIC_CHATBASE_ID || null,
-  // WebwhizAI 机器人 @see https://github.com/webwhiz-ai/webwhiz
-  WEB_WHIZ_ENABLED: process.env.NEXT_PUBLIC_WEB_WHIZ_ENABLED || false, // 是否显示
-  WEB_WHIZ_BASE_URL:
-    process.env.NEXT_PUBLIC_WEB_WHIZ_BASE_URL || 'https://api.webwhiz.ai', // 可以自建服务器
-  WEB_WHIZ_CHAT_BOT_ID: process.env.NEXT_PUBLIC_WEB_WHIZ_CHAT_BOT_ID || null, // 在后台获取ID
+
+  /**
+   * Webwhiz AI 机器人 (支持自建)
+   * 官网: https://www.webwhiz.ai/
+   */
+  WEB_WHIZ_ENABLED: process.env.NEXT_PUBLIC_WEB_WHIZ_ENABLED || false,
+  WEB_WHIZ_BASE_URL: process.env.NEXT_PUBLIC_WEB_WHIZ_BASE_URL || 'https://api.webwhiz.ai',
+  WEB_WHIZ_CHAT_BOT_ID: process.env.NEXT_PUBLIC_WEB_WHIZ_CHAT_BOT_ID || null,
+
+  /**
+   * Dify 聊天机器人 (目前最流行的开源 AI 工作流平台)
+   * 官网: https://dify.ai/
+   */
   DIFY_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_DIFY_CHATBOT_ENABLED || false,
   DIFY_CHATBOT_BASE_URL: process.env.NEXT_PUBLIC_DIFY_CHATBOT_BASE_URL || '',
   DIFY_CHATBOT_TOKEN: process.env.NEXT_PUBLIC_DIFY_CHATBOT_TOKEN || '',
 
-  // 悬浮挂件
-  WIDGET_PET: process.env.NEXT_PUBLIC_WIDGET_PET || true, // 是否显示宠物挂件
+  // =====================================================================
+  // 第三部分：趣味性互动挂件 (Interactive Widgets)
+  // =====================================================================
+
+  /**
+   * 桌面宠物挂件 (Live2D Pet)
+   * 作用：在网页右下角显示一个可互动的 2D 动漫形象。
+   * 模型地址：默认使用 wanko (小狗) 模型，您可以更换为其他 JSON 模型链接。
+   */
+  WIDGET_PET: process.env.NEXT_PUBLIC_WIDGET_PET || true,
   WIDGET_PET_LINK:
     process.env.NEXT_PUBLIC_WIDGET_PET_LINK ||
-    'https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json', // 挂件模型地址 @see https://github.com/xiazeyu/live2d-widget-models
-  WIDGET_PET_SWITCH_THEME:
-    process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || true, // 点击宠物挂件切换博客主题
+    'https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json',
+  WIDGET_PET_SWITCH_THEME: process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || true, // 点击宠物切换主题
 
-  SPOILER_TEXT_TAG: process.env.NEXT_PUBLIC_SPOILER_TEXT_TAG || '', // Spoiler文本隐藏功能，如Notion中 [sp]希望被spoiler的文字[sp]，填入[sp] 即可
+  /**
+   * 内容剧透/隐藏标签 (Spoiler Tag)
+   * 作用：在 Notion 中使用特定的符号包裹文字，实现点击后才显示的“防剧透”效果。
+   * 示例：若填入 [sp]，则 Notion 中 [sp]隐藏文字[sp] 将被模糊处理。
+   */
+  SPOILER_TEXT_TAG: process.env.NEXT_PUBLIC_SPOILER_TEXT_TAG || '',
 
-  // 音乐播放插件
-  MUSIC_PLAYER: process.env.NEXT_PUBLIC_MUSIC_PLAYER || false, // 是否使用音乐播放插件
-  MUSIC_PLAYER_VISIBLE: process.env.NEXT_PUBLIC_MUSIC_PLAYER_VISIBLE || true, // 是否在左下角显示播放和切换，如果使用播放器，打开自动播放再隐藏，就会以类似背景音乐的方式播放，无法取消和暂停
-  MUSIC_PLAYER_AUTO_PLAY:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_AUTO_PLAY || true, // 是否自动播放，不过自动播放时常不生效（移动设备不支持自动播放）
-  MUSIC_PLAYER_LRC_TYPE: process.env.NEXT_PUBLIC_MUSIC_PLAYER_LRC_TYPE || '0', // 歌词显示类型，可选值： 3 | 1 | 0（0：禁用 lrc 歌词，1：lrc 格式的字符串，3：lrc 文件 url）（前提是有配置歌词路径，对 meting 无效）
-  MUSIC_PLAYER_CDN_URL:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_CDN_URL ||
-    'https://cdn.jsdelivr.net/npm/aplayer@1.10.0/dist/APlayer.min.js',
-  MUSIC_PLAYER_ORDER: process.env.NEXT_PUBLIC_MUSIC_PLAYER_ORDER || 'list', // 默认播放方式，顺序 list，随机 random
+  // =====================================================================
+  // 第四部分：音乐播放插件 (Music Player)
+  // 采用 APlayer 核心引擎
+  // =====================================================================
+
+  MUSIC_PLAYER: process.env.NEXT_PUBLIC_MUSIC_PLAYER || false, // 总开关
+  MUSIC_PLAYER_VISIBLE: process.env.NEXT_PUBLIC_MUSIC_PLAYER_VISIBLE || true, // 播放器面板是否可见
+  MUSIC_PLAYER_AUTO_PLAY: process.env.NEXT_PUBLIC_MUSIC_PLAYER_AUTO_PLAY || false, // 是否自动播放（大部分浏览器会拦截此行为）
+  MUSIC_PLAYER_LRC_TYPE: process.env.NEXT_PUBLIC_MUSIC_PLAYER_LRC_TYPE || '0', // 歌词类型 (0:禁用, 1:字符串, 3:LRC文件)
+  MUSIC_PLAYER_CDN_URL: 'https://cdn.jsdelivr.net/npm/aplayer@1.10.0/dist/APlayer.min.js',
+  MUSIC_PLAYER_ORDER: process.env.NEXT_PUBLIC_MUSIC_PLAYER_ORDER || 'list', // 播放顺序: list(列表), random(随机)
+
+  /**
+   * 自定义本地音乐列表 (Custom Audio List)
+   * 提示：此处已清空原作者歌单。请按照以下格式填入您喜欢的音乐。
+   */
   MUSIC_PLAYER_AUDIO_LIST: [
-    // 示例音乐列表。除了以下配置外，还可配置歌词，具体配置项看此文档 https://aplayer.js.org/#/zh-Hans/
     {
-      name: '风を共に舞う気持ち',
-      artist: 'Falcom Sound Team jdk',
-      url: 'https://music.163.com/song/media/outer/url?id=731419.mp3',
-      cover:
-        'https://p2.music.126.net/kn6ugISTonvqJh3LHLaPtQ==/599233837187278.jpg'
-    },
-    {
-      name: '王都グランセル',
-      artist: 'Falcom Sound Team jdk',
-      url: 'https://music.163.com/song/media/outer/url?id=731355.mp3',
-      cover:
-        'https://p1.music.126.net/kn6ugISTonvqJh3LHLaPtQ==/599233837187278.jpg'
+      name: '示例曲目',
+      artist: '艺术家',
+      url: '', // 音乐文件链接 (mp3)
+      cover: '' // 封面图链接
     }
   ],
-  MUSIC_PLAYER_METING: process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING || false, // 是否要开启 MetingJS，从平台获取歌单。会覆盖自定义的 MUSIC_PLAYER_AUDIO_LIST，更多配置信息：https://github.com/metowolf/MetingJS
-  MUSIC_PLAYER_METING_SERVER:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_SERVER || 'netease', // 音乐平台，[netease, tencent, kugou, xiami, baidu]
-  MUSIC_PLAYER_METING_ID:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_ID || '60198', // 对应歌单的 id
-  MUSIC_PLAYER_METING_LRC_TYPE:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_LRC_TYPE || '1', // 已废弃！！！可选值： 3 | 1 | 0（0：禁用 lrc 歌词，1：lrc 格式的字符串，3：lrc 文件 url）
 
-  // 一个小插件展示你的facebook fan page~ @see https://tw.andys.pro/article/add-facebook-fanpage-notionnext
-  FACEBOOK_PAGE_TITLE: process.env.NEXT_PUBLIC_FACEBOOK_PAGE_TITLE || null, // 邊欄 Facebook Page widget 的標題欄，填''則無標題欄 e.g FACEBOOK 粉絲團'
-  FACEBOOK_PAGE: process.env.NEXT_PUBLIC_FACEBOOK_PAGE || null, // Facebook Page 的連結 e.g https://www.facebook.com/tw.andys.pro
-  FACEBOOK_PAGE_ID: process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || '', // Facebook Page ID 來啟用 messenger 聊天功能
-  FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '' // Facebook App ID 來啟用 messenger 聊天功能 获取: https://developers.facebook.com/
+  /**
+   * MetingJS 歌单集成 (推荐)
+   * 作用：直接调用网易云、腾讯音乐等平台的歌单。
+   */
+  MUSIC_PLAYER_METING: process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING || false,
+  MUSIC_PLAYER_METING_SERVER: process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_SERVER || 'netease', // 平台: netease, tencent, kugou
+  MUSIC_PLAYER_METING_ID: process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_ID || '60198', // 歌单 ID
+
+  // =====================================================================
+  // 第五部分：社交平台挂件 (Social Widgets)
+  // =====================================================================
+
+  /**
+   * Facebook 粉丝专页挂件
+   * 提示：已移除原作者的专页链接。
+   */
+  FACEBOOK_PAGE_TITLE: process.env.NEXT_PUBLIC_FACEBOOK_PAGE_TITLE || null,
+  FACEBOOK_PAGE: process.env.NEXT_PUBLIC_FACEBOOK_PAGE || null,
+  FACEBOOK_PAGE_ID: process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || '',
+  FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || ''
 }
