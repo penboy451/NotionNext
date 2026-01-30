@@ -1,13 +1,23 @@
 <!DOCTYPE html>
+<!-- 原代码保留 lang="en"，确保全球浏览器解析一致性 -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 原始标题，用于显示在浏览器标签页 -->
     <title>DPlayer Video Player</title>
-    <!-- 引入 DPlayer 样式文件 -->
+    
+    <!-- 引入 DPlayer 样式文件：来自全球公共库 jsDelivr -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
+    
     <style>
+        /* 
+           这里的 CSS 逻辑是：
+           1. 让 html 和 body 占满 100% 的高度。
+           2. margin/padding: 0 彻底消除白边。
+           3. overflow: hidden 强制隐藏滚动条，因为播放器不需要滚动。
+        */
         html,
         body {
             height: 100%;
@@ -16,6 +26,7 @@
             overflow: hidden;
         }
 
+        /* 视频容器：同样占满全屏 */
         #dplayer-container {
             width: 100%;
             height: 100%;
@@ -24,34 +35,53 @@
 </head>
 
 <body>
-    <!-- 创建一个容器用于放置视频播放器 -->
+    <!-- 这是一个空的“挂载点”，播放器画面稍后会生成在这里 -->
     <div id="dplayer-container"></div>
-    <!-- 引入 Hls.js 库 -->
+
+    <!-- 
+        引入 Hls.js：
+        它的作用是让播放器支持 HLS 流媒体（.m3u8 格式）。
+        没有它，你就只能播放普通的 mp4。
+    -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
-    <!-- 引入 DPlayer JavaScript 文件 -->
+    <!-- 引入 DPlayer 的大脑（逻辑脚本） -->
     <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
 
     <script>
+        /**
+         * 【核心逻辑：解析视频地址】
+         * split('n=')[1] 的意思是：
+         * 如果你的网址是 dplayer.htm?n=https://test.com/123.mp4
+         * 它会把前面的乱七八糟切掉，只留下 n= 后面的那个视频地址。
+         */
         var myParam = decodeURIComponent(location.search.split('n=')[1]);
+        
+        // 如果用户没传视频地址，直接弹出提示
         if (!myParam) {
             alert('无效的视频地址')
         }
-        // 创建 DPlayer 实例
+
+        /**
+         * 初始化播放器
+         */
         var dp = new DPlayer({
-            // 定义容器
+            // 告诉程序：视频画在哪个容器里
             container: document.getElementById('dplayer-container'),
-            // 视频源地址
+            
+            // 视频源设置
             video: {
-                url: myParam
-                // 如果有多个清晰度，可以在这里添加更多的清晰度选项
-                // quality: [
-                //     { name: 'HD', url: 'https://example.com/your-video-hd.mp4', type: 'normal' },
-                //     { name: 'SD', url: 'https://example.com/your-video-sd.mp4', type: 'normal' }
-                // ],
+                url: myParam // 使用解析出来的视频地址
             },
-            autoplay: false, // 设置为手动点击播放
-            // 视频封面图片
+
+            // 交互行为
+            autoplay: false, // 默认不自动播放
+            
+            /**
+             * 封面图设置
+             * 提示：原作者这里留了一个 example.com 的死链接，
+             * 这也是一种“私货”，但在代码中仅作为占位符。
+             */
             poster: 'https://example.com/your-video-poster.jpg',
         });
     </script>
