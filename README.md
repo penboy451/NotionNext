@@ -1,7 +1,6 @@
 # penboy451 的数字花园 (Digital Garden)
 
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/penboy451/NotionNext?style=for-the-badge&color=blue)](https://github.com/penboy451/NotionNext/commits/main)
-[![Build status](https://img.shields.io/github/deployments/penboy451/NotionNext/Production?logo=Vercel&style=for-the-badge)](https://vercel.com/penboy451/notion-next)
 [![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fwww.pengboyu.com&style=for-the-badge&label=Online)](https://www.pengboyu.com)
 
 ---
