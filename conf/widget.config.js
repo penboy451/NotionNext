@@ -55,11 +55,11 @@ module.exports = {
    * 作用：在网页右下角显示一个可互动的 2D 动漫形象。
    * 模型地址：默认使用 wanko (小狗) 模型，您可以更换为其他 JSON 模型链接。
    */
-  WIDGET_PET: process.env.NEXT_PUBLIC_WIDGET_PET || true,
+  WIDGET_PET: process.env.NEXT_PUBLIC_WIDGET_PET || false,
   WIDGET_PET_LINK:
     process.env.NEXT_PUBLIC_WIDGET_PET_LINK ||
     'https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json',
-  WIDGET_PET_SWITCH_THEME: process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || true, // 点击宠物切换主题
+  WIDGET_PET_SWITCH_THEME: process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || false, // 点击宠物切换主题
 
   /**
    * 内容剧透/隐藏标签 (Spoiler Tag)
